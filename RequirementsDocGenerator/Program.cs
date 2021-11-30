@@ -6,8 +6,6 @@ namespace RequirementsDocGenerator
     {
         static void Main(string[] args)
         {
-            //string projectPath = @"C:\Users\jbadillo\Documents\workspace\RequirementsDocGenerator\RequirementsDocGenerator";
-            //gen.Generate($"{projectPath}/requirements.xlsx", $"{projectPath}/requirements.docx");
             if(args.Length < 2)
             {
                 Console.WriteLine("Usage: Program <INPUT FILE> <OUTPUT FILE>");

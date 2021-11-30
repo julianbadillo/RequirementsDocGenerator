@@ -1,8 +1,5 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs/
+﻿/.vs/
 /RequirementsDocGenerator/obj
 /RequirementsDocGenerator/bin
 /RequirementsDocGenerator/Properties
+/data/output.docx
