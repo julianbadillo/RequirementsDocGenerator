@@ -2,4 +2,9 @@
 /RequirementsDocGenerator/obj
 /RequirementsDocGenerator/bin
 /RequirementsDocGenerator/Properties
-/data/output.docx
+/RequirementsDocGenerator/obj
+/RequirementsDocGeneratorTest/bin
+/RequirementsDocGeneratorTest/Properties
+/RequirementsDocGeneratorTest/obj
+/data/*.docx
+/obj/

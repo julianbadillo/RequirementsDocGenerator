@@ -9,7 +9,7 @@ namespace RequirementsDocGenerator
     /// <summary>
     /// Generates a Requirements document from an excel spreadsheet.
     /// </summary>
-    class DocGenerator
+    public class DocGenerator
     {
         const string SHEET_NAME = "Functional Requirements";
         const string PROJECT_NAME = "ACORN";
@@ -33,13 +33,17 @@ namespace RequirementsDocGenerator
         /// <summary>
         /// Produces a requirements Word document from the table of requirements in Excel
         /// </summary>
-        /// <param name="inputFile"></param>
-        /// <param name="outputFile"></param>
-        public void Generate(string inputFile, string outputFile)
+        /// <param name="inputFile">The excel spreadsheet</param>
+        /// <param name="outputFile">The generated document file</param>
+        /// <param name="templateFile">optional template file</param>
+        public void Generate(string inputFile, string outputFile, string templateFile = null)
         {
             // Requirements from the excel table
             var reqList = ReadRequirements(inputFile);
-            WriteRequirementsDocument(outputFile, reqList);
+            if(string.IsNullOrEmpty(templateFile))
+                WriteRequirementsDocument(outputFile, reqList);
+            else 
+                WriteRequirementsFromTemplate(outputFile, reqList, templateFile);
         }
 
         /// <summary>
@@ -90,12 +94,51 @@ namespace RequirementsDocGenerator
                     // category title
                     writer.WriteHeading1(group.Key);
                     // list of requirements - sort by level
+                    writer.StartNumberList();
                     foreach(var req in group.OrderBy(r => r.Level ?? 0))
                     {
-                        writer.WriteHeading2(req.ReqId);
-                        writer.WriteParagraph(req.Text);
-                        writer.WriteParagraph($"Level: {req.Level}");
-                        writer.WriteParagraph($"Tags: {string.Join("; ",req.Tags)}");
+                        //writer.WriteHeading2(req.ReqId);
+                        writer.AddNumberListItem($"{req.ReqId}: {req.Text}");
+                        //writer.WriteParagraph(req.Text);
+                        //writer.WriteParagraph($"Level: {req.Level}");
+                        //writer.WriteParagraph($"Tags: {string.Join("; ",req.Tags)}");
+                    }
+                }
+            }
+        }
+
+        private void WriteRequirementsFromTemplate(string outputFile, IList<Requirement> reqList, string templateFile)
+        {
+            using (var writer = new WordTemplateWriter())
+            {
+                writer.StartDocumentFromTemplate(templateFile, outputFile);
+                // document title
+                writer.WriteTitle(TITLE);
+                writer.WritePageBreak();
+
+                // Beginning
+                writer.WriteHeading1("Purpose of this Document");
+                writer.WriteParagraph("<write the purpose of this document>");
+
+                // Sort by category
+                var byCategory = reqList.GroupBy(req => req.Category);
+                foreach (var group in byCategory)
+                {
+                    // skip these categories
+                    if (group.Key == "Out_Of_Scope"
+                        || group.Key == "Top_Level")
+                        continue;
+                    // category title
+                    writer.WriteHeading1(group.Key);
+                    // list of requirements - sort by level
+                    writer.StartNumberList();
+                    foreach(var req in group.OrderBy(r => r.Level ?? 0))
+                    {
+                        //writer.WriteHeading2(req.ReqId);
+                        writer.AddNumberListItem($"{req.ReqId}: {req.Text}");
+                        //writer.WriteParagraph(req.Text);
+                        //writer.WriteParagraph($"Level: {req.Level}");
+                        //writer.WriteParagraph($"Tags: {string.Join("; ",req.Tags)}");
                     }
                 }
             }

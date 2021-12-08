@@ -16,9 +16,9 @@ namespace RequirementsDocGenerator
     /// </summary>
     public class WordWriter : IDisposable
     {
-        private WordprocessingDocument WordprocessingDocument;
-        private MainDocumentPart MainDocumentPart;
-        private Body Body;
+        protected WordprocessingDocument WordprocessingDocument;
+        protected MainDocumentPart MainDocumentPart;
+        protected Body Body;
 
         /// <summary>
         /// Inits the documents - creates styles parts and common parts
@@ -26,7 +26,7 @@ namespace RequirementsDocGenerator
         /// <param name="fileName"></param>
         public void StartDocument(string fileName)
         {
-            WordprocessingDocument = WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document);
+            this.WordprocessingDocument = WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document);
 
             MainDocumentPart = WordprocessingDocument.AddMainDocumentPart();
             MainDocumentPart.Document = new Document();
@@ -54,7 +54,7 @@ namespace RequirementsDocGenerator
         /// <summary>
         /// Styles
         /// </summary>
-        private Style NormalStyle, HyperLinkStyle, TableBodyStyle, TableHeaderStyle, TitleStyle, Heading1Style, Heading2Style, PageFooterStyle, PageHeaderStyle;
+        protected Style NormalStyle, HyperLinkStyle, TableBodyStyle, TableHeaderStyle, TitleStyle, Heading1Style, Heading2Style, PageFooterStyle, PageHeaderStyle;
 
         /// <summary>
         /// Creates and populates styles parts
@@ -248,7 +248,7 @@ namespace RequirementsDocGenerator
         /// <summary>
         /// Reference to current title numbering instance
         /// </summary>
-        private NumberingInstance CurrentNumInst;
+        protected NumberingInstance CurrentNumInst;
 
         /// <summary>
         /// Starts the Heading 1 and Heading 2 numberings.
